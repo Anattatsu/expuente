@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EL EXPUENTE D' TATA | Menú Interactivo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { red: '#e50914', redDark: '#b20710', black: '#0a0a0a', card: '#141414', border: '#2a2a2a' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Cinzel', 'serif'] }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #000000; }
+        ::-webkit-scrollbar-thumb { background: #2e2f35; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #e50914; }
+        .glow-red { box-shadow: 0 0 25px rgba(229, 9, 20, 0.25); }
+        body {
+            background: linear-gradient(to bottom, #1a0304 0%, #0a0a0a 40%, #0a0a0a 100%);
+            background-attachment: fixed;
+        }
+        .header-textured-bg {
+            background-color: rgba(10, 10, 10, 0.95);
+            background-image: radial-gradient(rgba(229, 9, 20, 0.15) 1px, transparent 1px);
+            background-size: 24px 24px;
+            position: relative;
+        }
+    </style>
+</head>
+<body class="text-gray-100 font-sans min-h-screen flex flex-col pb-24 lg:pb-0">
+
+    <!-- TIENDA CERRADA BANNER -->
+    <div id="closedBanner" class="hidden bg-red-600 text-white text-center py-2 text-xs font-bold sticky top-0 z-50 shadow-md">
+        <i class="fa-solid fa-store-slash mr-1"></i> El restaurante está cerrado en este momento. Solo lectura del menú.
+    </div>
+
+    <!-- HEADER SUPERIOR CON TEXTURA Y BOTONES -->
+    <header class="header-textured-bg border-b border-brand-border sticky top-0 z-30 shadow-2xl backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
+            
+            <!-- LOGO Y TÍTULO -->
+            <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-full bg-brand-red border-2 border-red-500/50 flex items-center justify-center text-white font-bold text-xl shadow-lg glow-red">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
+                <div>
+                    <h1 class="font-serif font-black text-2xl md:text-3xl tracking-wider text-white">EL EXPUENTE D' TATA</h1>
+                    <p class="text-[11px] text-gray-400 uppercase tracking-widest mt-0.5 font-semibold">Tradicionalmente delicioso desde <span class="text-brand-red font-bold">1997</span></p>
+                </div>
+            </div>
+
+            <!-- BOTONES SUPERIORES DERECHA -->
+            <div class="flex items-center gap-3 flex-wrap justify-center">
+                <!-- ACCESO ADMIN (Apunta a panel.html) -->
+                <a href="panel.html" class="flex items-center gap-2 bg-zinc-900 border border-zinc-800 hover:border-brand-red px-3.5 py-2.5 rounded-xl text-xs text-gray-300 hover:text-white transition shadow-sm" title="Panel de Administración">
+                    <i class="fa-solid fa-shield-halved text-brand-red"></i>
+                    <span class="font-bold hidden sm:inline">Panel Admin</span>
+                </a>
+
+                <!-- WHATSAPP CONTACTO -->
+                <a href="https://wa.me/573000490586?text=Hola,%20quisiera%20más%20información%20o%20hacer%20una%20consulta" target="_blank" class="flex items-center gap-2.5 bg-zinc-900/90 border border-zinc-800 hover:border-emerald-500/50 px-3.5 py-2 rounded-xl text-xs shadow-inner transition cursor-pointer group">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition">
+                        <i class="fa-brands fa-whatsapp text-base"></i>
+                    </div>
+                    <div>
+                        <span class="block text-gray-400 text-[10px] font-medium">Contacto directo</span>
+                        <span class="font-bold text-white font-mono group-hover:text-emerald-400 transition">300 0490586</span>
+                    </div>
+                </a>
+
+                <!-- BOTÓN VER CARTA OFICIAL -->
+                <a href="carta.html" class="flex items-center gap-2 bg-brand-red hover:bg-brand-redDark text-white px-4 py-2.5 rounded-xl text-xs font-bold transition shadow-lg glow-red">
+                    <i class="fa-solid fa-book-open"></i> Ver Carta Oficial
+                </a>
+            </div>
+        </div>
+
+        <!-- BARRA DE BÚSQUEDA Y CATEGORÍAS -->
+        <div class="max-w-7xl mx-auto px-4 pb-4 pt-1 flex flex-col md:flex-row gap-3 items-center justify-between">
+            <div class="relative w-full md:w-80">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-gray-500 text-xs"></i>
+                <input type="text" id="searchInput" onkeyup="renderProducts()" placeholder="Buscar perro, hamburguesa..." 
+                       class="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white focus:outline-none focus:border-brand-red transition">
+            </div>
+            <div id="categoriesContainer" class="w-full overflow-x-auto flex gap-2 py-1 no-scrollbar"></div>
+        </div>
+    </header>
+
+    <!-- CONTAINER PRINCIPAL -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- SECCIÓN IZQUIERDA: LISTADO DE PRODUCTOS -->
+        <section class="lg:col-span-8 space-y-6">
+            <div class="flex items-center justify-between border-b border-zinc-800/80 pb-3">
+                <h2 id="currentCategoryTitle" class="font-serif font-bold text-base text-white tracking-wide uppercase flex items-center gap-2">
+                    <span class="w-1.5 h-4 bg-brand-red rounded-full"></span> Todas las Categorías
+                </h2>
+                <span id="productCountBadge" class="text-xs text-gray-400 font-mono bg-zinc-900 border border-zinc-800 px-3 py-1 rounded-full">0 disponible(s)</span>
+            </div>
+            
+            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+        </section>
+
+        <!-- SECCIÓN DERECHA: CARRITO Y FIDELIZACIÓN -->
+        <aside class="lg:col-span-4">
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-5 sticky top-28 space-y-4 shadow-2xl">
+                <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+                    <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                        <i class="fa-solid fa-basket-shopping text-brand-red"></i> Tu Pedido
+                    </h3>
+                    <span id="cartItemCountBadge" class="bg-brand-red text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full font-mono">0 ítems</span>
+                </div>
+
+                <div id="cartItemsContainer" class="space-y-3 max-h-56 overflow-y-auto text-xs pr-1">
+                    <div id="emptyCartState" class="text-center py-10 text-gray-500 space-y-3">
+                        <div class="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center mx-auto text-gray-600 text-lg">
+                            <i class="fa-solid fa-basket-shopping"></i>
+                        </div>
+                        <p class="text-xs text-gray-400">Tu pedido está vacío.</p>
+                    </div>
+                </div>
+
+                <!-- TOTALES Y DATOS -->
+                <div class="border-t border-zinc-800 pt-3 space-y-3">
+                    <div class="flex justify-between items-center text-xs text-gray-400">
+                        <span>Subtotal:</span>
+                        <span id="cartSubtotal" class="font-mono text-white">$ 0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-gray-400">
+                        <span>Empaque & Envío:</span>
+                        <span class="text-emerald-400 font-medium">A convenir</span>
+                    </div>
+                    <div class="flex justify-between items-center font-bold text-sm border-t border-zinc-800/60 pt-2">
+                        <span class="text-white">Total Estimado:</span>
+                        <span id="cartTotal" class="text-brand-red font-mono text-base">$ 0</span>
+                    </div>
+
+                    <!-- DATOS DEL CLIENTE Y RANGO DE FIDELIDAD -->
+                    <div class="space-y-2 pt-2">
+                        <div class="relative">
+                            <input type="email" id="custEmail" placeholder="Correo (Opcional para ver tus beneficios)" onblur="checkCustomerLoyalty()" oninput="checkCustomerLoyalty()" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-red transition">
+                        </div>
+
+                        <!-- BADGE DE FIDELIDAD -->
+                        <div id="loyaltyBadgeContainer" class="hidden bg-zinc-900/90 border border-zinc-800 rounded-xl p-2.5 flex items-center justify-between transition">
+                            <div class="flex items-center gap-2.5">
+                                <div id="badgeIconContainer" class="w-9 h-9 rounded-full flex items-center justify-center text-base shadow-md">
+                                    <i id="badgeIcon" class="fa-solid fa-shield"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Nivel de Fidelidad:</span>
+                                        <span id="badgeRankName" class="text-xs font-black uppercase font-mono">Hierro</span>
+                                    </div>
+                                    <p id="badgeBenefitText" class="text-[10px] text-gray-300">1º pedido • ¡Sigue pidiendo para subir de nivel!</p>
+                                </div>
+                            </div>
+                            <button onclick="openLoyaltyModal()" class="text-xs text-amber-400 hover:text-amber-300 p-1.5" title="Ver todos los rangos y beneficios">
+                                <i class="fa-solid fa-circle-info text-sm"></i>
+                            </button>
+                        </div>
+
+                        <input type="text" id="custName" placeholder="Tu Nombre *" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-red">
+                        <input type="text" id="custAddress" placeholder="Dirección de entrega *" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-red">
+                        <textarea id="custNotes" rows="2" placeholder="Notas generales del pedido..." class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-red resize-none"></textarea>
+                    </div>
+
+                    <!-- BOTÓN PEDIR POR WHATSAPP -->
+                    <button onclick="sendOrderToWhatsApp()" id="checkoutBtn" disabled class="w-full py-3 bg-zinc-800 text-gray-500 font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition cursor-not-allowed">
+                        <i class="fa-brands fa-whatsapp text-base"></i> Confirmar pedido.
+                    </button>
+
+                    <div class="text-center pt-1">
+                        <button onclick="clearCart()" class="text-[11px] text-gray-500 hover:text-red-400 transition underline">Vaciar Carrito</button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- MODAL DE BENEFICIOS Y RANGOS DE FIDELIDAD -->
+    <div id="loyaltyModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-brand-card border border-brand-border rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+                <h3 class="font-serif font-bold text-white text-base flex items-center gap-2">
+                    <i class="fa-solid fa-award text-amber-400"></i> Programa de Fidelidad
+                </h3>
+                <button onclick="closeLoyaltyModal()" class="text-gray-400 hover:text-white text-base"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="text-xs text-gray-400">Entre más pidas con tu correo registrado, más beneficios desbloqueas:</p>
+            <div class="space-y-3 max-h-72 overflow-y-auto pr-1">
+                <div class="bg-zinc-900 border border-zinc-700/50 p-3 rounded-xl flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-slate-700/40 border border-slate-500 text-slate-300 flex items-center justify-center text-lg font-bold"><i class="fa-solid fa-shield"></i></div>
+                    <div>
+                        <div class="flex items-center gap-2"><span class="font-bold text-xs text-slate-300 uppercase">Hierro</span><span class="text-[9px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">1 a 2 pedidos</span></div>
+                        <p class="text-[11px] text-gray-400">Acceso a promociones generales y recordatorio de datos.</p>
+                    </div>
+                </div>
+                <div class="bg-zinc-900 border border-amber-900/50 p-3 rounded-xl flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-amber-950/60 border border-amber-700 text-amber-600 flex items-center justify-center text-lg font-bold"><i class="fa-solid fa-medal"></i></div>
+                    <div>
+                        <div class="flex items-center gap-2"><span class="font-bold text-xs text-amber-600 uppercase">Bronce</span><span class="text-[9px] bg-amber-950/80 text-amber-500 px-2 py-0.5 rounded font-mono">3 a 5 pedidos</span></div>
+                        <p class="text-[11px] text-gray-300"><strong>Beneficio:</strong> Sorteos prioritarios de combos.</p>
+                    </div>
+                </div>
+                <div class="bg-zinc-900 border border-slate-400/40 p-3 rounded-xl flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-slate-800/80 border border-slate-300 text-slate-200 flex items-center justify-center text-lg font-bold"><i class="fa-solid fa-crown"></i></div>
+                    <div>
+                        <div class="flex items-center gap-2"><span class="font-bold text-xs text-slate-200 uppercase">Plata</span><span class="text-[9px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono">6 a 9 pedidos</span></div>
+                        <p class="text-[11px] text-gray-300"><strong>Beneficio:</strong> Bebida o adicional gratis sorpresa.</p>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-r from-amber-950/40 to-zinc-900 border border-amber-500/60 p-3 rounded-xl flex items-center gap-3 shadow-lg">
+                    <div class="w-10 h-10 rounded-full bg-amber-500/20 border-2 border-amber-400 text-amber-400 flex items-center justify-center text-lg font-bold"><i class="fa-solid fa-gem"></i></div>
+                    <div>
+                        <div class="flex items-center gap-2"><span class="font-bold text-xs text-amber-400 uppercase">Oro VIP</span><span class="text-[9px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-mono">10+ pedidos</span></div>
+                        <p class="text-[11px] text-gray-200"><strong>Beneficio VIP:</strong> 15% de descuento + Atención preferencial.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-zinc-800 pt-3">
+                <button onclick="closeLoyaltyModal()" class="w-full bg-brand-red hover:bg-brand-redDark text-white py-2 rounded-xl text-xs font-bold transition">¡Entendido!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE ADICIONALES -->
+    <div id="additionalsModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-brand-card border border-brand-border rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+                <h3 class="font-serif font-bold text-white text-base flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-brand-red"></i> Adicionales para <span id="modalProductName" class="text-brand-red"></span>
+                </h3>
+                <button onclick="closeAdditionalsModal()" class="text-gray-400 hover:text-white text-base"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="text-xs text-gray-400">Selecciona los adicionales que deseas agregar a este producto:</p>
+            <div id="additionalsList" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div>
+            <div class="border-t border-zinc-800 pt-4 flex gap-3">
+                <button onclick="closeAdditionalsModal()" class="flex-1 bg-zinc-900 border border-zinc-800 text-gray-300 py-2.5 rounded-xl text-xs font-bold transition">Cancelar</button>
+                <button onclick="confirmAdditionals()" class="flex-1 bg-brand-red hover:bg-brand-redDark text-white py-2.5 rounded-xl text-xs font-bold transition shadow-lg glow-red">Aceptar y Agregar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="baseDeDatos.js"></script>
+    <script>
+        let appData = {};
+        let cart = [];
+        let selectedCategory = 'todas';
+        let currentModalProductId = null;
+
+        function init() {
+            appData = getDB();
+            if (!appData.storeOpen) {
+                document.getElementById('closedBanner').classList.remove('hidden');
+            }
+            renderCategories();
+            renderProducts();
+            renderCart();
+
+            try {
+                const lastEmail = localStorage.getItem(LAST_EMAIL_KEY);
+                if (lastEmail) {
+                    const emailInput = document.getElementById('custEmail');
+                    if (emailInput) {
+                        emailInput.value = lastEmail;
+                        checkCustomerLoyalty();
+                    }
+                }
+            } catch (err) {
+                console.error("Error cargando correo", err);
+            }
+        }
+
+        window.addEventListener('storage', (e) => {
+            if (e.key === DB_KEY) {
+                appData = getDB();
+                renderCategories();
+                renderProducts();
+            }
+        });
+
+        function getLoyaltyRank(ordersCount) {
+            if (ordersCount >= 10) return { name: "Oro VIP", icon: "fa-gem", bgClass: "bg-amber-500/20 border-amber-400 text-amber-400", textClass: "text-amber-400", benefit: "¡Cliente VIP! 15% Dcto." };
+            if (ordersCount >= 6) return { name: "Plata", icon: "fa-crown", bgClass: "bg-slate-700/60 border-slate-300 text-slate-200", textClass: "text-slate-200", benefit: "Sorpresa gratis en tus pedidos." };
+            if (ordersCount >= 3) return { name: "Bronce", icon: "fa-medal", bgClass: "bg-amber-950/80 border-amber-700 text-amber-600", textClass: "text-amber-600", benefit: "Sorteos exclusivos." };
+            return { name: "Hierro", icon: "fa-shield", bgClass: "bg-slate-800 border-slate-600 text-slate-400", textClass: "text-slate-400", benefit: "¡Pide 3 veces para ser Bronce!" };
+        }
+
+        function checkCustomerLoyalty() {
+            const emailInput = document.getElementById('custEmail');
+            const container = document.getElementById('loyaltyBadgeContainer');
+            if (!emailInput || !container) return;
+
+            const email = emailInput.value.trim().toLowerCase();
+            if (!email || !email.includes('@')) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            try {
+                const customers = JSON.parse(localStorage.getItem(CUSTOMERS_KEY)) || {};
+                const customerData = customers[email];
+                const ordersCount = customerData ? (customerData.totalOrders || 1) : 1;
+
+                if (customerData) {
+                    if (customerData.name && !document.getElementById('custName').value) document.getElementById('custName').value = customerData.name;
+                    if (customerData.address && !document.getElementById('custAddress').value) document.getElementById('custAddress').value = customerData.address;
+                }
+
+                const rank = getLoyaltyRank(ordersCount);
+                document.getElementById('badgeIcon').className = `fa-solid ${rank.icon}`;
+                document.getElementById('badgeIconContainer').className = `w-9 h-9 rounded-full flex items-center justify-center text-sm shadow-md border ${rank.bgClass}`;
+                document.getElementById('badgeRankName').textContent = rank.name;
+                document.getElementById('badgeRankName').className = `text-xs font-black uppercase font-mono ${rank.textClass}`;
+                document.getElementById('badgeBenefitText').textContent = `${ordersCount} pedido(s) • ${rank.benefit}`;
+                container.classList.remove('hidden');
+            } catch (err) {
+                console.error("Error fidelidad", err);
+            }
+        }
+
+        function openLoyaltyModal() { document.getElementById('loyaltyModal').classList.remove('hidden'); }
+        function closeLoyaltyModal() { document.getElementById('loyaltyModal').classList.add('hidden'); }
+
+        function renderCategories() {
+            const container = document.getElementById('categoriesContainer');
+            if (!appData.categories) return;
+            container.innerHTML = appData.categories.map(c => `
+                <button onclick="selectCategory('${c.id}', '${c.name}')" class="px-3.5 py-2 rounded-xl border text-xs font-medium whitespace-nowrap transition ${selectedCategory === c.id ? 'bg-brand-red border-brand-red text-white shadow-md glow-red' : 'bg-zinc-900 border-zinc-800 text-gray-400 hover:text-white'}">
+                    ${c.name}
+                </button>
+            `).join('');
+        }
+
+        function selectCategory(id, name) {
+            selectedCategory = id;
+            document.getElementById('currentCategoryTitle').innerHTML = `<span class="w-1.5 h-4 bg-brand-red rounded-full"></span> ${name}`;
+            renderCategories();
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const search = (document.getElementById('searchInput').value || '').toLowerCase();
+            if (!appData.products) return;
+
+            let list = appData.products.filter(p => p.active);
+            if (selectedCategory !== 'todas') list = list.filter(p => p.category === selectedCategory);
+            if (search) list = list.filter(p => p.name.toLowerCase().includes(search) || (p.desc && p.desc.toLowerCase().includes(search)));
+
+            document.getElementById('productCountBadge').textContent = `${list.length} disponible(s)`;
+            if (list.length === 0) {
+                grid.innerHTML = `<div class="col-span-2 text-center py-12 text-gray-500 bg-brand-card border border-brand-border rounded-2xl">No se encontraron productos.</div>`;
+                return;
+            }
+
+            const catMap = {};
+            if (appData.categories) appData.categories.forEach(c => catMap[c.id] = c.name);
+
+            grid.innerHTML = list.map(p => {
+                const catName = catMap[p.category] || p.category;
+                return `
+                    <div class="bg-brand-card border border-brand-border rounded-2xl p-4 flex flex-col justify-between hover:border-zinc-700 transition shadow-lg space-y-3">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-brand-red/15 text-brand-red border border-brand-red/30">${catName}</span>
+                                ${p.promo ? '<i class="fa-solid fa-crown text-amber-400 text-xs"></i>' : '<i class="fa-solid fa-utensils text-zinc-700 text-xs"></i>'}
+                            </div>
+                            <h3 class="font-bold text-white text-sm mb-1">${p.name}</h3>
+                            <p class="text-xs text-gray-400 line-clamp-2">${p.desc || ''}</p>
+                        </div>
+                        <div class="space-y-2 pt-1">
+                            <select id="noteSelect-${p.id}" onchange="handleNoteSelectChange(${p.id})" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-2.5 py-1.5 text-[11px] text-white focus:outline-none focus:border-brand-red">
+                                <option value="">Sin nota especial (Estándar)</option>
+                                <option value="Sin salsas">Sin salsas</option>
+                                <option value="Sin piña">Sin piña</option>
+                                <option value="Sin tártara">Sin tártara</option>
+                                <option value="Sin cebolla">Sin cebolla</option>
+                                <option value="Sin tomate">Sin tomate</option>
+                                <option value="Sin queso">Sin queso</option>
+                                <option value="otra">Otra (Escribir...)</option>
+                            </select>
+                            <input type="text" id="customNote-${p.id}" placeholder="Escribe tu nota..." class="hidden w-full bg-zinc-900 border border-zinc-800 rounded-lg px-2.5 py-1.5 text-[11px] text-white focus:outline-none focus:border-brand-red">
+                        </div>
+                        <div class="flex items-center justify-between border-t border-zinc-800/80 pt-3 gap-2">
+                            <span class="font-mono font-bold text-white text-sm">$ ${p.price.toLocaleString()}</span>
+                            <div class="flex gap-1.5">
+                                <button onclick="openAdditionalsModal(${p.id}, '${p.name.replace(/'/g, "\\'")}')" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-amber-400 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1 transition">
+                                    <i class="fa-solid fa-plus text-[10px]"></i> Adicionales
+                                </button>
+                                <button onclick="addProduct(${p.id})" ${!appData.storeOpen ? 'disabled' : ''} class="bg-brand-red hover:bg-brand-redDark text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition glow-red">
+                                    <i class="fa-solid fa-cart-plus text-[10px]"></i> Agregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function handleNoteSelectChange(id) {
+            const select = document.getElementById(`noteSelect-${id}`);
+            const customInput = document.getElementById(`customNote-${id}`);
+            if (select.value === 'otra') {
+                customInput.classList.remove('hidden');
+                customInput.focus();
+            } else {
+                customInput.classList.add('hidden');
+                customInput.value = '';
+            }
+        }
+
+        function getSelectedNote(id) {
+            const select = document.getElementById(`noteSelect-${id}`);
+            if (!select) return '';
+            if (select.value === 'otra') {
+                const customInput = document.getElementById(`customNote-${id}`);
+                return customInput ? customInput.value.trim() : '';
+            }
+            return select.value;
+        }
+
+        function addProduct(id, extraAdditionalsText = '', extraAdditionalsPrice = 0) {
+            const prod = appData.products.find(p => p.id === id);
+            if (!prod) return;
+
+            const itemNote = getSelectedNote(id);
+            const finalPrice = prod.price + extraAdditionalsPrice;
+            let fullNote = itemNote;
+            if (extraAdditionalsText) {
+                fullNote = fullNote ? `${fullNote} | Adicionales: ${extraAdditionalsText}` : `Adicionales: ${extraAdditionalsText}`;
+            }
+
+            const existingIndex = cart.findIndex(i => i.id === id && i.note === fullNote && i.unitPrice === finalPrice);
+            if (existingIndex > -1) {
+                cart[existingIndex].qty++;
+            } else {
+                cart.push({ id: prod.id, name: prod.name, unitPrice: finalPrice, qty: 1, note: fullNote });
+            }
+
+            const select = document.getElementById(`noteSelect-${id}`);
+            if (select) select.value = "";
+            const customInput = document.getElementById(`customNote-${id}`);
+            if (customInput) { customInput.value = ""; customInput.classList.add('hidden'); }
+            renderCart();
+        }
+
+        function openAdditionalsModal(productId, productName) {
+            currentModalProductId = productId;
+            document.getElementById('modalProductName').textContent = productName;
+            const container = document.getElementById('additionalsList');
+            if (!appData.products) return;
+
+            const additionals = appData.products.filter(p => p.active && (p.category.toLowerCase().includes('adicional') || p.name.toLowerCase().includes('adicional')));
+            if (additionals.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-400 text-center py-4">No hay adicionales configurados.</p>`;
+            } else {
+                container.innerHTML = additionals.map(add => `
+                    <label class="flex items-center justify-between bg-zinc-900 border border-zinc-800 p-2.5 rounded-xl cursor-pointer hover:border-brand-red transition">
+                        <div class="flex items-center gap-2.5">
+                            <input type="checkbox" name="modalAdditional" value="${add.name}" data-price="${add.price}" class="w-4 h-4 accent-red-600 rounded">
+                            <span class="text-xs text-white font-medium">${add.name}</span>
+                        </div>
+                        <span class="text-xs text-brand-red font-mono font-bold">+ $ ${add.price.toLocaleString()}</span>
+                    </label>
+                `).join('');
+            }
+            document.getElementById('additionalsModal').classList.remove('hidden');
+        }
+
+        function closeAdditionalsModal() {
+            document.getElementById('additionalsModal').classList.add('hidden');
+            currentModalProductId = null;
+        }
+
+        function confirmAdditionals() {
+            if (!currentModalProductId) return;
+            const checkboxes = document.querySelectorAll('input[name="modalAdditional"]:checked');
+            let addTextList = [];
+            let addTotalPrice = 0;
+            checkboxes.forEach(cb => {
+                addTextList.push(cb.value);
+                addTotalPrice += parseFloat(cb.getAttribute('data-price') || 0);
+            });
+            addProduct(currentModalProductId, addTextList.join(', '), addTotalPrice);
+            closeAdditionalsModal();
+        }
+
+        function updateQty(index, delta) {
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) cart.splice(index, 1);
+            renderCart();
+        }
+
+        function clearCart() { cart = []; renderCart(); }
+
+        function renderCart() {
+            const container = document.getElementById('cartItemsContainer');
+            const totalItems = cart.reduce((sum, i) => sum + i.qty, 0);
+            const total = cart.reduce((sum, i) => sum + (i.unitPrice * i.qty), 0);
+
+            document.getElementById('cartItemCountBadge').textContent = `${totalItems} ${totalItems === 1 ? 'ítem' : 'ítems'}`;
+            document.getElementById('cartSubtotal').textContent = `$ ${total.toLocaleString()}`;
+            document.getElementById('cartTotal').textContent = `$ ${total.toLocaleString()}`;
+
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const isOpen = appData.storeOpen !== false;
+            if (cart.length > 0 && isOpen) {
+                checkoutBtn.disabled = false;
+                checkoutBtn.className = "w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition shadow-lg cursor-pointer";
+            } else {
+                checkoutBtn.disabled = true;
+                checkoutBtn.className = "w-full py-3 bg-zinc-800 text-gray-500 font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition cursor-not-allowed";
+            }
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div id="emptyCartState" class="text-center py-10 text-gray-500 space-y-3">
+                        <div class="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center mx-auto text-gray-600 text-lg"><i class="fa-solid fa-basket-shopping"></i></div>
+                        <p class="text-xs text-gray-400">Tu pedido está vacío.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = cart.map((i, index) => `
+                <div class="bg-zinc-900/90 border border-zinc-800 p-2.5 rounded-xl space-y-1.5">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-white text-xs">${i.name}</h4>
+                            ${i.note ? `<p class="text-[10px] text-brand-red font-medium italic">Nota: ${i.note}</p>` : ''}
+                        </div>
+                        <div class="flex items-center gap-2 bg-zinc-950 px-2 py-1 rounded-lg border border-zinc-800">
+                            <button onclick="updateQty(${index}, -1)" class="text-gray-400 hover:text-white px-1"><i class="fa-solid fa-minus text-[10px]"></i></button>
+                            <span class="font-mono font-bold text-xs text-white">${i.qty}</span>
+                            <button onclick="updateQty(${index}, 1)" class="text-gray-400 hover:text-white px-1"><i class="fa-solid fa-plus text-[10px]"></i></button>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-brand-red font-mono text-[11px] font-bold">$ ${(i.unitPrice * i.qty).toLocaleString()}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function sendOrderToWhatsApp() {
+            const email = document.getElementById('custEmail').value.trim().toLowerCase();
+            const name = document.getElementById('custName').value.trim();
+            const address = document.getElementById('custAddress').value.trim();
+            const notes = document.getElementById('custNotes').value.trim();
+
+            if (!name || !address) {
+                alert("Por favor ingresa tu nombre y dirección de entrega.");
+                return;
+            }
+
+            const total = cart.reduce((sum, i) => sum + (i.unitPrice * i.qty), 0);
+
+            if (email) {
+                try {
+                    localStorage.setItem(LAST_EMAIL_KEY, email);
+                    const customers = JSON.parse(localStorage.getItem(CUSTOMERS_KEY)) || {};
+                    if (!customers[email]) {
+                        customers[email] = { email, name, address, totalOrders: 1, totalSpent: total, lastOrderDate: new Date().toISOString() };
+                    } else {
+                        customers[email].name = name;
+                        customers[email].address = address;
+                        customers[email].totalOrders += 1;
+                        customers[email].totalSpent += total;
+                        customers[email].lastOrderDate = new Date().toISOString();
+                    }
+                    localStorage.setItem(CUSTOMERS_KEY, JSON.stringify(customers));
+                } catch (err) {
+                    console.error("Error guardando cliente", err);
+                }
+            }
+
+            let msg = `🍔 *NUEVO PEDIDO - EL EXPUENTE D' TATA* 🍔\n`;
+            msg += `👤 *Cliente:* ${name}\n`;
+            if (email) msg += `📧 *Correo:* ${email}\n`;
+            msg += `📍 *Dirección:* ${address}\n`;
+            if (notes) msg += `📝 *Notas Generales:* ${notes}\n`;
+            msg += `\n*Detalle del pedido:*\n`;
+            cart.forEach(i => {
+                msg += `• ${i.qty}x ${i.name} - $ ${(i.unitPrice * i.qty).toLocaleString()}`;
+                if (i.note) msg += ` _(Nota: ${i.note})_`;
+                msg += `\n`;
+            });
+            msg += `\n💰 *TOTAL ESTIMADO:* $ ${total.toLocaleString()}`;
+
+            window.open(`https://wa.me/573000490586?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
